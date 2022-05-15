@@ -15,6 +15,8 @@
 package azuremonitorexporter // import "github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter"
 
 import (
+	"fmt"
+
 	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/ptrace"
 )
@@ -46,11 +48,13 @@ func Accept(traces ptrace.Traces, v TraceVisitor) {
 			// instrumentation library is optional
 			scope := scopeSpans.Scope()
 			spansSlice := scopeSpans.Spans()
+
 			if spansSlice.Len() == 0 {
 				continue
 			}
 
 			for k := 0; k < spansSlice.Len(); k++ {
+				fmt.Println("######## ", spansSlice.At(k).Attributes().AsRaw())
 				if ok := v.visit(resource, scope, spansSlice.At(k)); !ok {
 					return
 				}
