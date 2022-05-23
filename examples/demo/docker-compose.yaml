@@ -69,6 +69,15 @@ services:
     depends_on:
       - otel-collector
 
+#fluent-bit
+  # fluent-bit:
+  #   image: fluent/fluent-bit
+  #   volumes:
+  #   - ./server/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+  #   # depends_on:
+  #   #   - demo-server
+
+
   # prometheus:
   #   container_name: prometheus
   #   image: prom/prometheus:latest

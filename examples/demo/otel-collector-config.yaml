@@ -4,21 +4,25 @@ receivers:
       grpc:
 
 exporters:
-  prometheus:
-    endpoint: "0.0.0.0:8889"
-    const_labels:
-      label1: value1
+  azuremonitor:
+    endpoint: "https://dc.services.visualstudio.com/v2/track"
+    instrumentation_key: b1cd0778-85fc-4677-a3fa-79d3c23e0efd
+
+  # prometheus:
+  #   endpoint: "0.0.0.0:8889"
+  #   const_labels:
+  #     label1: value1
 
   logging:
+    logLevel: debug
+  # zipkin:
+  #   endpoint: "http://zipkin-all-in-one:9411/api/v2/spans"
+  #   format: proto
 
-  zipkin:
-    endpoint: "http://zipkin-all-in-one:9411/api/v2/spans"
-    format: proto
-
-  jaeger:
-    endpoint: jaeger-all-in-one:14250
-    tls:
-      insecure: true
+  # jaeger:
+  #   endpoint: jaeger-all-in-one:14250
+  #   tls:
+  #     insecure: true
 
 processors:
   batch:
@@ -36,8 +40,8 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, zipkin, jaeger]
+      exporters: [logging, azuremonitor]
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, prometheus]
+      exporters: [logging]

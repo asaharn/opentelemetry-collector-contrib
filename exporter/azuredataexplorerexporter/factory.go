@@ -22,7 +22,8 @@ func NewFactory() component.ExporterFactory {
 		"azuredataexplorer",
 		createDefaultConfig,
 		component.WithLogsExporter(createLogsExporter),
-		//component.WithTracesExporter(createTraceExporter),
+		component.WithTracesExporter(createTraceExporter),
+		component.WithMetricsExporter(createMetricsExporter),
 	)
 
 }

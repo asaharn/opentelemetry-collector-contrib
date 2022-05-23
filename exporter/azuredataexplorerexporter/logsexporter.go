@@ -11,9 +11,8 @@ import (
 )
 
 func newLogsExporter(set component.ExporterCreateSettings, cfg config.Exporter) (component.LogsExporter, error) {
-
 	return exporterhelper.NewLogsExporter(cfg, set, func(ctx context.Context, logData plog.Logs) error {
-		//fmt.Println("-------->>>>>>>>############### ", logData)
+		fmt.Println("-------->>>>>>>>############### ", logData)
 		resourceLogs := logData.ResourceLogs()
 		for i := 0; i < resourceLogs.Len(); i++ {
 			scopeLogs := resourceLogs.At(i).ScopeLogs()
