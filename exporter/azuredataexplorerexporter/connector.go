@@ -15,25 +15,17 @@ import (
 )
 
 const traceTable = "TraceSpans2"
-const metricTable = "MetricsData"
-const metricTable2 = "MetricsData2"
+const metricTable = "RawMetricsData"
 
 const createTraceTableCommand = `.create-merge tables  %s ( trace_id: string, parent_id: string, span_id:string, span_name: string, span_status: string, span_kind:string , start_time: string, end_time: string,  Attributes: dynamic,  events: dynamic,  links: dynamic   )`
 
 // query need to be discussed
 const createTraceTableMappingCommand = `.create-or-alter table ['%s'] ingestion csv mapping '%s_mapping' '[{"Column": "trace_id", "Properties": {"Ordinal": "0"}},{"Column": "parent_id", "Properties": {"Ordinal": "1"}},{"Column": "span_id", "Properties": {"Ordinal": "2"}},{"Column": "span_name", "Properties": {"Ordinal": "3"}},{"Column": "span_status", "Properties": {"Ordinal": "4"}},{"Column": "span_kind", "Properties": {"Ordinal": "5"}},{"Column": "start_time", "Properties": {"Ordinal": "6"}},{"Column": "end_time", "Properties": {"Ordinal": "7"}},{"Column": "Attributes", "Properties": {"Ordinal": "8"}},{"Column": "events", "Properties": {"Ordinal": "9"}}, {"Column": "links", "Properties": {"Ordinal": "10"}}]'`
-return &splunk.Event{
-	Time:       timestampToSecondsWithMillisecondPrecision(timestamp),
-	Host:       host,
-	Source:     source,
-	SourceType: sourceType,
-	Event:      splunk.HecEventMetricType,
-	Fields:     fields,}
 //const createTableMapping = `.create table ['%s'] ingestion json mapping '%s_mapping' '[{"Column": "trace_id", "Properties": {"Path": "$[\'trace_id\']"}},{"Column": "parent_id", "Properties": {"Path": "$.parent_id"}},{"Column": "span_id", "Properties": {"Path": "$.span_id"}},{"Column": "span_name", "Properties": {"Path": "$.span_name"}},{"Column": "span_status", "Properties": {"Path": "$.span_status"}},{"Column": "span_kind", "Properties": {"Path": "$.span_kind"}},{"Column": "start_time", "Properties": {"Path": "$.start_time"}},{"Column": "end_time","Properties": {"Path": "$.end_time"}},{"Column": "Attributes","Properties": {"Path": "$.Attributes"}}]'`
 //const createMetricTableCommand = `.create-merge tables  %s ( name: string, data_type: string, unit:string, description: string, resc_attributes: dynamic )`
 //const createMetricTableMappingCommand = `.create-or-alter table ['%s'] ingestion csv mapping '%s_mapping' '[{"Column": "name", "Properties": {"Ordinal": "0"}},{"Column": "data_type", "Properties": {"Ordinal": "1"}},{"Column": "unit", "Properties": {"Ordinal": "2"}},{"Column": "description", "Properties": {"Ordinal": "3"}}, {"Column": "resc_attributes", "Properties": {"Ordinal": "4"}}]'`
-const createMetricTableCommand = `.create-merge tables  %s ( Time: timestamp, Host: string, Source:string, SourceType: string, Event: string, Fields: dynamic )`
-const createMetricTableMappingCommand = `.create-or-alter table ['%s'] ingestion csv mapping '%s_mapping' '[{"Column": "Time", "Properties": {"Ordinal": "0"}},{"Column": "Host", "Properties": {"Ordinal": "1"}},{"Column": "Source", "Properties": {"Ordinal": "2"}},{"Column": "SourceType", "Properties": {"Ordinal": "3"}}, {"Column": "Event", "Properties": {"Ordinal": "4"}}, {"Column": "Fields", "Properties": {"Ordinal": "5"}}]'`
+const createMetricTableCommand = `.create-merge tables  %s ( Timestamp: datetime, MetricName: string, MetricType:string, Value: double, Host: string, Fields: dynamic )`
+const createMetricTableMappingCommand = `.create-or-alter table ['%s'] ingestion csv mapping '%s_mapping' '[{"Column": "Timestamp", "Properties": {"Ordinal": "0"}},{"Column": "MetricName", "Properties": {"Ordinal": "1"}},{"Column": "MetricType", "Properties": {"Ordinal": "2"}}, {"Column": "Value", "Properties": {"Ordinal": "3"}}, {"Column": "Host", "Properties": {"Ordinal": "4"}}, {"Column": "Fields", "Properties": {"Ordinal": "5"}}]'`
 
 var createTableCmd = map[string]string{
 	traceTable:  fmt.Sprintf(createTraceTableCommand, traceTable),

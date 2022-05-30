@@ -14,6 +14,7 @@ type Config struct {
 	SecretId                string `mapstructure:"secretid"`
 	TenentId                string `mapstructure:"tenentid"`
 	DBName                  string `mapstructure:"dbname"`
+	HostName                string `mapstructure:"hostname"`
 }
 
 func NewFactory() component.ExporterFactory {
@@ -32,6 +33,7 @@ func createDefaultConfig() config.Exporter {
 	cfg := &Config{
 		ExporterSettings: config.NewExporterSettings(config.NewComponentID("azuredataexplorer")),
 		Endpoint:         "",
+		HostName:         "unknown",
 	}
 
 	return cfg
