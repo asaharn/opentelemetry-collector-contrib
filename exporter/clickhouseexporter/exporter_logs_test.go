@@ -40,8 +40,7 @@ func TestLogsExporter_New(t *testing.T) {
 
 	failWithMsg := func(msg string) validate {
 		return func(t *testing.T, _ *logsExporter, err error) {
-			require.Error(t, err)
-			require.Contains(t, err.Error(), msg)
+			require.ErrorContains(t, err, msg)
 		}
 	}
 
@@ -57,7 +56,6 @@ func TestLogsExporter_New(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-
 			var err error
 			exporter, err := newLogsExporter(zap.NewNop(), test.config)
 			err = errors.Join(err, err)
@@ -285,8 +283,7 @@ func (t *testClickhouseDriverStmt) Query(_ []driver.Value) (driver.Rows, error) 
 	return nil, nil
 }
 
-type testClickhouseDriverTx struct {
-}
+type testClickhouseDriverTx struct{}
 
 func (*testClickhouseDriverTx) Commit() error {
 	return nil
